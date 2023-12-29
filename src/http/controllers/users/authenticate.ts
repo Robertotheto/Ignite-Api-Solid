@@ -25,7 +25,7 @@ export async function authenticate(
         sign: { sub: user.id },
       }
     );
-    reply.status(200).send({ token });
+    return reply.status(200).send({ token });
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
       return reply.status(400).send({
