@@ -3,25 +3,27 @@ import { createAndAuthenticateUser } from "@/utils/test/create-and-authenticate-
 import request from "supertest";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-describe("Profile (e2e)", () => {
+describe("Create Gyms (e2e)", () => {
   beforeAll(async () => {
     await app.ready();
   });
   afterAll(async () => {
     await app.close();
   });
-  it("should be able to profile", async () => {
+  it("should be able to create gyms", async () => {
     const { token } = await createAndAuthenticateUser(app);
     const response = await request(app.server)
-      .get("/me")
+      .post("/gyms")
       .set({
         Authorization: `Bearer ${token}`,
-      });
-    expect(response.status).toEqual(200);
-    expect(response.body.user).toEqual(
-      expect.objectContaining({
-        email: "johndoe@exemplo.com",
       })
-    );
+      .send({
+        title: "Javascript Gym",
+        description: "Gym to learn Javascript",
+        phone: "123456789",
+        latitude: -11.8196965,
+        longitude: -55.5092161,
+      });
+    expect(response.status).toEqual(201);
   });
 });
