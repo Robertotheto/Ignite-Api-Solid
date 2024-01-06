@@ -22,7 +22,9 @@ export default <Environment>{
     const schema = randomUUID();
     const databaseURL = generateDatabaseURL(schema);
     process.env.DATABASE_URL = databaseURL;
-    execSync(`npx prisma migrate deploy`);
+    execSync(
+      `PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK=true npx prisma migrate deploy`
+    );
     return {
       async teardown() {
         await prisma.$executeRawUnsafe(
